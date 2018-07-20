@@ -1,0 +1,8 @@
+---
+
+exclude_paths:
+  - 'doc/**'
+  - 'qoopty/static/**'
+  - 'qoopty/templates/**'
+  - '*.min.js'
+  - '**/test/**'

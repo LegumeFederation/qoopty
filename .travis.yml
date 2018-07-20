@@ -1,0 +1,54 @@
+sudo: false
+language: python
+python:
+   - "3.6"
+before_install:
+   - ln -s install/qoopty_tool.sh ./qoopty_tool
+   - ./qoopty_tool create_scripts
+   - ./qoopty_tool init
+   - export root_dir="$(python -c 'import sys;print(sys.prefix)')"
+   - ./qoopty_tool config root_dir $root_dir
+   - ./qoopty_tool config var_dir ${root_dir}/var
+   - ./qoopty_tool config tmp_dir ${root_dir}/var/tmp
+   - ./qoopty_tool config log_dir ${root_dir}/var/log
+   - ./qoopty_tool config python system
+   - ./qoopty_tool config all
+   - ./qoopty_tool make_dirs
+   - ./qoopty_tool install
+install:
+   - pip install -U setuptools
+   - pip install -U setuptools-scm
+   - pip install -U packaging
+   - pip install -r requirements.txt
+   - pip install -e .
+before_script:
+   - qoopty_env coverage run -m qoopty.cli
+   - export COVERAGE_PROCESS_START="${PWD}/.coveragerc"
+   - qoopty_env qoopty config secret_key
+   - qoopty_env qoopty config secret_key blahblahblah
+   - qoopty_env qoopty config
+   - qoopty_env qoopty create_instance
+   - qoopty_env qoopty set_htpasswd
+   - qoopty_env qoopty create_test_files
+script:
+   - qoopty_env -v start
+   - qoopty_env qoopty rq info
+   - cat ${root_dir}/var/log/qoopty_server.log
+   - ./test_targets.sh
+   - qoopty_env stop
+after_success:
+   - qoopty_env qoopty test_logging
+   - qoopty_env qoopty config blah Bob_LobLaw
+   - qoopty_env qoopty config --vartype=list mylist "[1,2,3]"
+   - qoopty_env qoopty config var /tmp/qooptyvar
+   - export QOOPTY_SUPERVISORD_START_SERVER=True
+   - qoopty_env qoopty config supervisord_start_nginx False
+   - export QOOPTY_SUPERVISORD_START_SERVER=False
+   - qoopty_env qoopty config gunicorn_unix_socket False
+   - qoopty_env qoopty config nginx_unix_socket True
+   - qoopty_env qoopty create_instance --force
+   - qoopty_env qoopty set_htpasswd --force
+   - qoopty_env qoopty config --delete
+   - coverage combine
+   - cp /tmp/.coverage .
+   - bash <(curl -s https://codecov.io/bash) -X gcov

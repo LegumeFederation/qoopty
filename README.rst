@@ -1,7 +1,7 @@
 
 
 
-Qoopty implements a queue-backed web service using
+Qoopty implements queue-backed web services using
 `RQ`_ for queueing, and `Flask`_ to serve up results.
 
 

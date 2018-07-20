@@ -1,0 +1,8 @@
+include *.txt
+include *.rst
+include qoopty/bin/server_env
+include qoopty/user_conf/server_rc
+recursive-include qoopty/etc *
+recursive-include qoopty/test *
+recursive-include qoopty/static *
+recursive-include qoopty/templates *
