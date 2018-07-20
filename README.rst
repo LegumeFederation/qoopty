@@ -30,7 +30,7 @@ Qoopty implements a queue-backed web service using
 +-------------------+------------+------------+
 
 
-.. |hoopty| image:: docs/qoopty.jpg
+.. |hoopty| image:: docs/qoopty.png
      :target: https://www.hemmings.com/blog/2016/10/07/bombshell-betty-the-165-mph-1952-buick-super-riviera/
      :alt: Bombshell Betty
 
